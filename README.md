@@ -2,15 +2,17 @@
 SCORch Away is a Converter to turn Scorch viewer files (*.sco) back into AVID-Sibelius (*.sib).  
 A SIB file is a musical score created by Avid Sibelius, a popular music notation program.
 
-![Scora GUI Screenshot](https://abload.de/img/2013-03-13-08.38.23cax9uuf.png)
-
-
 ## Requirements 
-JRE Installed [Java Runtime Envirmoment](https://java.com/de/download/manual.jsp). 
-Still works with JRE 8 411
+JRE must be installed. [Java Runtime Envirmoment](https://java.com/de/download/manual.jsp). 
+**Tested with JRE 8 411**
 
 ## How To use
-GUI_Launcher.exe (Windows VB6) is Gui Launcher for SCORA.jar, which has just a cui
+
+__GUI_Launcher.exe__ is a Grapical User Interface for Windows written in VB6. It requires SCORA.jar.
+Usage is self explainable.
+![Scora GUI Screenshot](https://abload.de/img/2013-03-13-08.38.23cax9uuf.png)
+
+__SCORA.jar__ is the core and the only file you really need.
 
 On your commandline/Terminal run this:
 
@@ -56,7 +58,8 @@ List of some *.sco on
 to download and testing.
 
 sco-PDF Example:
-[https://www.sheetmusicdirect.com/scorches/smd_h_1017123dXf0IetXGR.sco](https://www.sheetmusicdirect.com/scorches/smd_h_1073902WBRe72Gb0O.sco)
+[smd_h_1073902WBRe72Gb0O.sco from sheetmusicdirect.com] (https://www.sheetmusicdirect.com/scorches/smd_h_1073902WBRe72Gb0O.sco)
+If there is a PDF the the created is of no use and should be deleted.
 
 [COME TO THE MUSIC](https://www.sheetmusicdirect.com/de-DE/se/ID_No/158473/Product.aspx)
 
@@ -199,9 +202,6 @@ Get SCO now
 		document.body.textContent.match(/[^"'>\s]+\.(sco)/gmi)[0])
 	    .src;
 ```
-
-
-
 
 
 
