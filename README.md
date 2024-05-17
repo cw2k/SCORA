@@ -146,8 +146,6 @@ History
 	* First version
 
 
-<cw2k@gmx.de>
-
 http://deioncube.in/files/?dir=cw2k/Sibelius Patch & Scorch File converter
 
 
@@ -203,20 +201,44 @@ Get SCO now
 	    .src;
 ```
 
+### Browser with NSAPI support to use Scorch player on the sites.
 
-
-
-##Browser with NSAPI support to use Scorch player on the sites.
  Mozilla has dropped the support of NPAPI plugins from Mozilla Firefox version 52.
 "[Pale Moon](https://www.palemoon.org/download.shtml) supports NPAPI plug-ins. Unlike Firefox, we will not be deprecating or removing support for these kinds of plug-ins."
 from [askubuntu.com](https://askubuntu.com/questions/905910/is-there-any-web-browser-with-npapi-plugins-support)
 
 
+So install palemoon 32-Bit Version.
+[Scorch620NSPluginInstaller](http://hub.sibelius.com/download/software/win/Scorch620NSPluginInstaller.exe)
+If installation hangs on VCredist kill installer.exe in Taskmanager.
+If installation succeed it there should be the file
+"c:\Program Files (x86)\Sibelius Software\Scorch\ScorchAxPlugin.dll"
+Incase you somehow manually extract the files from the installer.
+run regsvr32.exe ScorchAxPlugin.dll it'll invoke COM-Registation ( call API-export DllRegisterServer)
+... and save it's GUID and the path to the Registry.
+palemoon and others will then find it by its GUID.
 
+
+okay now you can test it via
+`java -jar SCORA.jar -verbose -HTML example\smd_137443.sco`
+
+load the created smd_137443.sco.html in palemoon Browser.
+Pay attention that you installed the 32-Bit Version of palemoon Browser ! ).
+
+
+Okay on https://www.sheetmusicdirect.com/de-DE/se/ID_No/114818/Product.aspx it still seems to not work.
+Well if scorch object is inside a script tag, it can't run.
+This Bookmarklet will remove that script tag
+
+Reactivate SCO
+```javascript
+javascript:var o=document.querySelector("script[id*='scorchObjectTemplate']")||alert("No SCO found!");o.outerHTML=o.innerHTML;
+```
 
 ___________________
 
 ##From sibelius.com helpcenter
+
 [SOLVED] Converting *.sco -> *.sib
 **open free .sco files in sibelius
 **is there a possibility to open free .sco (scorch files) in sibelius to edit it? i want to modify some arrangement i found on sibeliusmusic.com for my musicclass ensembles. now i have to print out the sheets and scan with photoscore to have the possibility of editing in sibelius. it is not comfortable. 
@@ -231,12 +253,10 @@ GUI is windows(VB6) but the main part(SCORA.jar) of the converter is in java so 
 **SCORA **is short for **Scorch away** and will completely unwrap *.sco files. 
 
 And here's a shortcut for the Scorch-player *Windows only*:
-**bit.do/ScorchPatch**
-## files.planet-dl.org/Cw2k/Sibelius%20Patch%20&%20Scorch%20File%20converter/ScorchPatch1.0_CW2K.7z
+ScorchPatch1.0_CW2K.7z
 It'll remove **all restrictions** and allow to **view&print** all pages as well as **save** the output as *.midi or *.sco.
 
-Well you may test it here:
-http://musicroom.com/se/id_no/0527707/details.html#c
+
 
 Scorch-player is not working since Webkit (Chrome, Opera, Safari) kicked out NSAPI-support. I recommand to use of firefox or Internet explorer that may still has it.
 
