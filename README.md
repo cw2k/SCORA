@@ -7,7 +7,6 @@ JRE must be installed. [Java Runtime Envirmoment](https://java.com/de/download/m
 **Tested with JRE 8 411**
 
 ## How To use
-
 __GUI_Launcher.exe__ is a Grapical User Interface for Windows written in VB6. It requires SCORA.jar.
 Usage is self explainable.
 ![Scora GUI Screenshot](https://abload.de/img/2013-03-13-08.38.23cax9uuf.png)
