@@ -4,20 +4,28 @@ A SIB file is a musical score created by Avid Sibelius, a popular music notation
 
 ![Scora GUI Screenshot](https://abload.de/img/2013-03-13-08.38.23cax9uuf.png)
 
-http://duc.avid.com/showthread.php?p=2407909#post2407909
+List of some *.sco on 
+[ sheetmusicdirect.com via archive.org](https://web.archive.org/web/*/https://www.sheetmusicdirect.com/scorches*)
+to download and testing.
 
-
-[ list of some *.sco on sheetmusicdirect.com via archive.org](https://web.archive.org/web/*/https://www.sheetmusicdirect.com/scorches*)
+PDF Example:
+[https://www.sheetmusicdirect.com/scorches/smd_h_1017123dXf0IetXGR.sco](https://www.sheetmusicdirect.com/scorches/smd_h_1073902WBRe72Gb0O.sco)
+COME TO THE MUSIC
+https://www.sheetmusicdirect.com/de-DE/se/ID_No/158473/Product.aspx
 
 ## Requirements 
-JRE Installed [Java Runtime Envirmoment](https://java.com/de/download/manual.jsp). Tested with JRE 8 411
+JRE Installed [Java Runtime Envirmoment](https://java.com/de/download/manual.jsp). 
+Still works with JRE 8 411
 
 ## How To use
 GUI_Launcher.exe (Windows VB6) is Gui Launcher for SCORA.jar, which has just a cui
 
 On your commandline/Terminal run this:
+
 `java -jar SCORA.jar`
-... and you should see the following help:	
+
+... and you should see the following help:
+
 	Scorch-Away Version 1.2
 	=======================
 	
@@ -38,12 +46,18 @@ On your commandline/Terminal run this:
 	
 	options:
 	 -noDecompress   Don't decompress the decrypted data
+         -NoUnlock       Keep Scorch options as they are.
 	 -chunks  (requires: -noDecompress)  Redirects decompressed chunk data into new 
 	                                     files (useful for *.idea or *.lib and *.sco 
 	                                     with embedded PDF)
 	 -verbose  Shows addition information
 	 -HTML     Create Html to run the file in Scorch
 
+Running:
+`java -jar SCORA.jar example\smd_137443.sco -verbose`
+Will create `smd_137443.sco.sib` 
+and as well modify and unlock the source file `smd_137443.sco` 
+If you do not want this add the `-NoUnlock` option to keep the source file untouched.
 
 
 Scorch-Away Version 1.2c - Readme
