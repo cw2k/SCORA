@@ -147,7 +147,75 @@ History
 
 http://deioncube.in/files/?dir=cw2k/Sibelius Patch & Scorch File converter
 
+
+### Grabbing *.sco Scorch files from a site.
+
+The easiest way is to use these SCORA [bookmarklets](http://wikipedia.org/wiki/Bookmarklet)
+
+To Install a bookmarklet apply the following steps:
+
+1. Copy the code in the selected code snippet.
+2. Create a new bookmark / favourite in your browser. Name it like the name text above the code. For the URL part paste(ctrl + v) the code you copied in step 1. 
+3. Click "Done"
+
+Get SCO now
+```javascript
+javascript:window.location=document.body.textContent.match(/[^"'>\s]+\.(sco)/gmi)[0]
+```
+that is the Instant download version 
+
+Make SCO link
+```javascript
+javascript:var d=document.body;var f=(d.textContent.match(/[^"'>\s]+\.(sco)/gmi)||alert("No SCO found!"))[0];var e = document.createElement('a');e.text='Download *.sco file';e.href=f;d.prepend(e);
+```
+that version creates a download on the top of the page you can click on.
+
+To Use:
+1. Open a website that has a *.sco on it. (Uses the Scorch player)
+2. Click the Bookmark you created before.
+
+Alternative workaround is to view the html-pages source (Hotkey is mostly Ctrl+U) and search for ".sco" there.
+
+#### Bookmarklet source code
+Make SCO link
+```javascript
+// Unfortunately DOM does not parse the script tag.
+// So that is how far you'll get via selectors: 
+// document.querySelector("script[id*='scorchObjectTemplate']")
+//
+// So the workaround is a plain Full text grep on the site
+var d = document.body;
+var f = (d.textContent.match(/[^"'>\s]+\.(sco)/gmi)  || alert("No SCO found!") )[0]; 
+
+var e = document.createElement('a');
+e.text  = 'Download *.sco file';
+e.href  = f;
+
+d.prepend(e);
+```
+Get SCO now
+```javascript
+	window.location = 
+		document.body.textContent.match(/[^"'>\s]+\.(sco)/gmi)[0])
+	    .src;
+```
+
+
+
+
+
+
+
+##Browser with NSAPI support to use Scorch player on the sites.
+ Mozilla has dropped the support of NPAPI plugins from Mozilla Firefox version 52.
+"[Pale Moon](https://www.palemoon.org/download.shtml) supports NPAPI plug-ins. Unlike Firefox, we will not be deprecating or removing support for these kinds of plug-ins."
+from [askubuntu.com](https://askubuntu.com/questions/905910/is-there-any-web-browser-with-npapi-plugins-support)
+
+
+
+
 ___________________
+
 ##From sibelius.com helpcenter
 [SOLVED] Converting *.sco -> *.sib
 **open free .sco files in sibelius
