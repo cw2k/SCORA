@@ -15,6 +15,37 @@ JRE Installed [Java Runtime Envirmoment](https://java.com/de/download/manual.jsp
 ## How To use
 GUI_Launcher.exe (Windows VB6) is Gui Launcher for SCORA.jar, which has just a cui
 
+On your commandline/Terminal run this:
+`java -jar SCORA.jar`
+... and you should see the following help:	
+	Scorch-Away Version 1.2
+	=======================
+	
+	Converts a Avid Scorch (*.sco) music score file into Avid Sibelius file (*.sib).
+	
+	 Now you can edit open & print it in Avid Sibelius without any restriction ! 
+	 ... or edit the scorch restriction (at the end of the file) with a (Hex-)Editor 
+	 and  open it in the scorch webplugin via the generate *.htm.
+	
+	 Note: You can also open a *.sib to remove its encryption and compression.
+	      Now it's open to analyze/customization!
+	      ... and you gain a better compression rate when packing it with
+	      Rar or 7-zip/LZMA.
+	
+	
+	usage: Scorch.jar <*.sco|*.sib file>  [<OutputfileName>]
+	
+	
+	options:
+	 -noDecompress   Don't decompress the decrypted data
+	 -chunks  (requires: -noDecompress)  Redirects decompressed chunk data into new 
+	                                     files (useful for *.idea or *.lib and *.sco 
+	                                     with embedded PDF)
+	 -verbose  Shows addition information
+	 -HTML     Create Html to run the file in Scorch
+
+
+
 Scorch-Away Version 1.2c - Readme
 ================================
 
@@ -56,35 +87,6 @@ Or
   SCORA.cmd -noDecompress CircleofFifths.sib 
   
   Rename "db.ideas" -> "db.ideas.sco" & doubleclick it.
-
-Help
-----
-	
-	Scorch-Away Version 1.2
-	=======================
-	
-	Converts a Avid Scorch (*.sco) music score file into Avid Sibelius file (*.sib).
-	
-	 Now you can edit open & print it in Avid Sibelius without any restriction ! 
-	 ... or edit the scorch restriction (at the end of the file) with a (Hex-)Editor 
-	 and  open it in the scorch webplugin via the generate *.htm.
-	
-	 Note: You can also open a *.sib to remove its encryption and compression.
-	      Now it's open to analyze/customization!
-	      ... and you gain a better compression rate when packing it with
-	      Rar or 7-zip/LZMA.
-	
-	
-	usage: Scorch.jar <*.sco|*.sib file>  [<OutputfileName>]
-	
-	
-	options:
-	 -noDecompress   Don't decompress the decrypted data
-	 -chunks  (requires: -noDecompress)  Redirects decompressed chunk data into new 
-	                                     files (useful for *.idea or *.lib and *.sco 
-	                                     with embedded PDF)
-	 -verbose  Shows addition information
-	 -HTML     Create Html to run the file in Scorch
 
 
 To apple and linux users
