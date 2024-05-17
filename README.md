@@ -4,14 +4,6 @@ A SIB file is a musical score created by Avid Sibelius, a popular music notation
 
 ![Scora GUI Screenshot](https://abload.de/img/2013-03-13-08.38.23cax9uuf.png)
 
-List of some *.sco on 
-[ sheetmusicdirect.com via archive.org](https://web.archive.org/web/*/https://www.sheetmusicdirect.com/scorches*)
-to download and testing.
-
-PDF Example:
-[https://www.sheetmusicdirect.com/scorches/smd_h_1017123dXf0IetXGR.sco](https://www.sheetmusicdirect.com/scorches/smd_h_1073902WBRe72Gb0O.sco)
-COME TO THE MUSIC
-https://www.sheetmusicdirect.com/de-DE/se/ID_No/158473/Product.aspx
 
 ## Requirements 
 JRE Installed [Java Runtime Envirmoment](https://java.com/de/download/manual.jsp). 
@@ -58,6 +50,24 @@ Running:
 Will create `smd_137443.sco.sib` 
 and as well modify and unlock the source file `smd_137443.sco` 
 If you do not want this add the `-NoUnlock` option to keep the source file untouched.
+
+List of some *.sco on 
+[ sheetmusicdirect.com via archive.org](https://web.archive.org/web/*/https://www.sheetmusicdirect.com/scorches*)
+to download and testing.
+
+sco-PDF Example:
+[https://www.sheetmusicdirect.com/scorches/smd_h_1017123dXf0IetXGR.sco](https://www.sheetmusicdirect.com/scorches/smd_h_1073902WBRe72Gb0O.sco)
+
+[COME TO THE MUSIC](https://www.sheetmusicdirect.com/de-DE/se/ID_No/158473/Product.aspx)
+
+Wow cool they still (@2024) have the old scorch on their website:
+    <object id="Object1" classid="clsid:A8F2B9BD-A6A0-486A-9744-18920D898429"
+            codebase="http://www.sibelius.com/download/software/win/ActiveXPlugin.cab#version="
+            width="550" height="715">
+        <param name="src" value="https://www.sheetmusicdirect.com/scorches/smd_h_1073902WBRe72Gb0O.sco"/>
+        <param name="type" value="application/x-sibelius-score"/>
+        <param name="scorch_arg_1" value="158473"/>
+	...
 
 
 Scorch-Away Version 1.2c - Readme
@@ -164,8 +174,6 @@ Scorch-player is not working since Webkit (Chrome, Opera, Safari) kicked out NSA
 
 However you don't need the Scorch-player. Just open website source( in Chrome Ctrl+U) and search for **.sco**
 
-[HTML]
-...
 		<embed id="ScorchPlugin" 
 			src="http://www.sheetmusicdirect.com/scorches/smd_h_0000000000097761.sco"
 			width="600"
@@ -173,12 +181,15 @@ However you don't need the Scorch-player. Just open website source( in Chrome Ct
 			align="BOTTOM" 
 			type="application/x-sibelius-score"
 			pluginspage="http://www.sibelius.com/cgi/plugin.pl"
-...
-[/HTML]
+
 ... and there he is the **SCO-Download-Link**
+
 `http://www.sheetmusicdirect.com/scorches/smd_h_0000000000097761.sco`
+
 Download it to were SCORA is (run cmd_exe) and type in (Copy&paste)
+
 `SCORA.cmd smd_h_0000000000097761.sco`
+
 You can also just double click on some ***.sco** and tell windows to open these files with **SCORA.cmd**
 ## (or rightclick and choose **Open with.../Choose standard program** to bring up the 'open with dialog' again)
 .
