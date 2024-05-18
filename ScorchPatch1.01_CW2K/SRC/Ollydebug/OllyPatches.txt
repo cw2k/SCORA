@@ -1,0 +1,28 @@
+Patches
+Address                                     Size   State     Old                               New                               Comment
+1002445F                                      3.   Removed   MOVZX   EAX, AL                   MOV     AL, 1                     XF1_ alway 'scorch_show_xf=1'
+<scorch_command_ParseMode> 10024986          12.   Removed   PUSH    4                         MOV     EAX, 2                    XF2 scorch_command Always 2 =>"Print"
+<XF_IsPrintMode> 100259DA                     4.   Removed   MOV     EAX, [ECX]                XOR     EAX, EAX                  XF2_1_AlwaysPrintmode
+1002B52E                                      5.   Removed   CALL    <(XF_IsPrintmode(GUI))>   XOR     EAX, EAX                  (XF3_Button_NoPrintMode)
+1002BAED                                      2.   Removed   JE      SHORT <Cancel>            JMP     SHORT 1002BAFB            XF5_NoHttpReport
+<XF_Proc> 1002BC5B                            2.   Active    PUSH    ESI                       JMP     SHORT 1002BCA7            XF4_NoAllowRequest
+1002D49B                                      3.   Active    XOR     EAX, EAX                  CALL    [EAX+8]                   CORE_bugfix for_always sib - for pdf_Mode
+1002EB1D                                      2.   Active    JNZ     SHORT 1002EB22            JMP     SHORT 1002EB22            CORE_REQ_SubstForSib's
+1003052B                                      2.   Removed   JNZ     SHORT 10030545            JNZ     SHORT 10030542            Req_Save1/2_GUI (*.sco only)
+10031D47                                      5.   Removed   CALL    <GuiQueryEnablePrint>     MOV     AL, 1                     Gui1
+10032020                                      3.   Changed   JMP     SHORT <SibPrint>          DEC     EAX                       Core_ Always SibPrint
+10035C3E                                      4.   Active    MOV     AL, [EAX+ECX+17]          MOV     AL, 1                     Con_AllMenu enable
+<(XF_IsPrintmode(GUI))> 100376E4              4.   Removed   MOV     ECX, [ECX+14]             XOR     EAX, EAX                  XF2_2_IsPrintMode
+<IsScorch> 10039764                           3.   Removed   MOV     AL, [ECX+10]              XOR     EAX, EAX                  CORE1_ 00 -sib 01 sco
+<GetAllowPrintSave> 10044CBF                  6.   Removed   PUSH    ESI                       MOV     EAX, 2                    1-Sco/2-Sib/0-sib-noprint
+<GetPages> 100450D8                           1.   Removed   PUSH    EBX                       RETN                              Req_ViewAllPages
+<NoWatermark> 10055008                        3.   Removed   PUSH    1C                        RETN    4                         ViweWatermaerk
+<IsFilePrint> 10096C89                        3.   Removed   PUSH    2C                        XOR     EAX, EAX                  REQ_Allow PrintToFile
+<IsAcrobat> 100974D1                          7.   Active    XOR     EAX, EAX                  PUSH    30                        REQ_Allow PrintToPDF
+1019E98C                                      5.   Removed   MOV     EAX, [<CCSCORCH>]         MOV     EAX, [<SIBELIUS>]
+1019E9A6                                     12.   Removed   MOV     EAX, [<CCSCORCH>]         MOV     EAX, [<SIBELIUS>]
+101BB7A1                                      5.   Removed   CALL    <IsScorch>                MOV     AL, 0                     isS Load
+<Playoptions> 102423AA                        3.   Removed   PUSH    0C                        XOR     EAX, EAX                  Req_Playall
+<ISEnableSubstituteInstruments> 1024264A      4.   Removed   PUSH    10                        XOR     EAX, EAX                  IsEnableSubstituteInstruments
+102492AE                                      6.   Removed   MOV     AL, [EDI+E4]              MOV     AL, 1                     Sib show save/Print
+<Print&Save> 1024A107                         6.   Changed   MOV     AL, [ECX+E4]              MOV     AL, 1                     REQ_Save&Print Allow(GlobalSnap=1)

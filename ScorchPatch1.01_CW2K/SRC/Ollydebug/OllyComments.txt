@@ -1,0 +1,147 @@
+1001bc70	SibSave
+1002443d	contextxf
+10024444	XF_Yes
+1002445f	XF1_ alway 'scorch_show_xf=1'
+10024986	XF2 scorch_command Always 2 =>"Print"
+10025053	SetMode
+100259da	XF2_1_AlwaysPrintmode
+100259fa	SetMode
+100262ff	XF_NoPrintMode
+1002630d	XF_No 'show_XF'
+100264aa	aaa
+1002713f	Init DisplayMode
+1002b52e	(XF3_Button_NoPrintMode)
+1002b53c	IsShow
+1002b563	XF
+1002baed	XF5_NoHttpReport
+1002bc5b	XF4_NoAllowRequest
+1002bc75	IsScorch
+1002bca7	XF-Start
+1002c36c	BT_??
+1002c864	isS 3_Play
+1002c867	3
+1002d454	IsS SetMode
+1002d49b	CORE_bugfix for_always sib - for pdf_Mode
+1002d4c2	No
+1002d524	Next
+1002e26d	EnableALL
+1002e277	EnableALL
+1002ea8d	0
+1002ea96	0
+1002ea9f	Enable
+1002eaa3	Hide
+1002eb0a	Subst
+1002eb14	isSco enableSubst
+1002eb1d	CORE_REQ_SubstForSib's
+1002eb25	Trans
+1002eb2f	Dis
+1002eb35	Dis Trasnsp
+1002eb3c	On/Off
+1002eb3d	Trans
+1002eb58	Dis subs
+1002eb62	Subst
+1002eb82	Play
+1002ec30	Termi
+1002f480	In/Out
+1002f5a1	Inital
+1002f764	Load
+10030526	isS Enable Save
+1003052b	Req_Save1/2_GUI (*.sco only)
+1003053d	SaveButton
+10030545	No
+10030546	Normal enable/Disable
+1003054a	Forced
+1003054f	Gui_ShowSave
+1003055b	Save
+100305ff	Terminate
+100306b2	Pdf_Load
+10030a84	Normal enable
+10030b88	2
+10030be8	Lib
+10030ed6	Load2 _DL
+10031016	Load_sib
+1003116d	Create
+100311f7	NoPdf
+10031285	AutoPrint
+100314b5	Req
+100314df	AllowPrint
+10031b69	Watermark
+10031ccc	Pages
+10031cce	Copys
+10031d47	Gui1
+10031d5b	NoPrint
+10031d63	Print
+10031d8b	SetMode
+10032020	Core_ Always SibPrint
+1003586f	No_Setbusy
+10035c3e	Con_AllMenu enable
+10036dbb	Flag 2/3
+100376e4	XF2_2_IsPrintMode
+1003920e	isS 4
+10039764	CORE1_ 00 -sib 01 sco
+1003a8d6	GUIenable5
+1003cd0a	Pages
+1003cd42	Leadinst
+1003cd6c	Transp
+1003cdc5	xf
+1003cdcc	XF
+10044225	Tmp_patch
+1004451c	1
+1004498d	aaa
+10044cbf	1-Sco/2-Sib/0-sib-noprint
+10044ce4	1-Sco/2-Sib/0-sib-noprint
+100450d8	Req_ViewAllPages
+10045116	IsPrintmode
+10045156	PlayAllFromCdRom
+100452cd	Req_SaveSCO3
+100452e3	IsSave/DelTemp
+10046008	3
+10046075	Pre
+10047b47	Error occures
+10047d8c	Exit
+10047e08	REQ_Allow PrintToFile
+100481c5	quit
+1004a7fc	Makecrc
+100547c5	BT_Back
+10055008	ViweWatermaerk
+10055121	LoadMode
+10055135	NoWatermark
+10059da6	aaa
+10084100	Strsth
+100871dc	GetName
+1008abe7	Find
+1008c500	AAAA
+100908d7	free
+1009658d	addPrinter
+10096c89	REQ_Allow PrintToFile
+10096f8e	exit
+100974d1	REQ_Allow PrintToPDF
+100992d2	Post
+1015f890	aaa
+1015f8d0	Init2
+1019e9d5	Crypt
+1019f0bd	pos
+1019f121	len
+1019f124	data
+1019f197	2
+1019f19a	2
+1019f1a5	2
+1019f610	okay
+1019f64d	ReadString
+1019f9a4	Name
+101bb7a1	isS Load
+101bb7a6	IsLoadf
+101fc5aa	isS 6
+101fc698	isS 7
+101fc765	isS 8
+101fc80f	IsS 9_
+1020c737	AA
+102420bd	ViewAllPages
+102423aa	Req_Playall
+1024264a	IsEnableSubstituteInstruments
+102426ae	PrintingSecurityScript
+10243248	GetName2
+1024359d	Defval
+102492ae	Sib show save/Print
+1024a107	REQ_Save&Print Allow(GlobalSnap=1)
+102514ec	4

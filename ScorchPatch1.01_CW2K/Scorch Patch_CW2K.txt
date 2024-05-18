@@ -1,0 +1,732 @@
+CW2K's ScorchPlugin Patch v1.0
+==============================
+
+
+This patch enhances the Sibelius ScorchPlugin and removes nearly all stupid limitations.
+
+* View, play & print all pages
+  (before you may consider to donate some bugs to the 'provider' for their hard work.)
+* no ugly watermarks, no missing pages
+* export music data to Yamaha XF *.mid
+* Save as *.sco file
+ ( Download SCORA to extracted wrapped pdf, images and to convert it to *.sib)
+
+
+Tested with
+NPSibelius.dll & ScorchAxPlugin.dll -> V6.22.80  (compiled 8.4.2010)
+
+Target Files:
+
+%ProgramFiles%\Mozilla Firefox\plugins\NPSibelius.dll
+%ProgramFiles%\Sibelius Software\Scorch\ActiveXPlugin\ScorchAxPlugin.dll
+
+
+
+Limits:
+
+-> For PDF's wrapped into Scorch the 'Save' Button is not shown
+  Workarounds:
+
+  Firefox: * press ctrl+alt+p to display page information
+           * switch to Tab 'Media' (and click on the size column to sort entry for size)
+           * select the *.sco 'application/x-sibelius-score'(should be biggest and at the beginning) and click on Save
+
+  IE: * right click on page / html source
+      * in source code windows search (ctrl + f) for ".sco"
+      * copy url like for ex. "http://www.sheetmusicdirect.com/scorches/smd_h_0000000000215540.sco" and
+        paste & open it in IE to download the *.sco
+        ^^-oops no download stupid crappy thing
+  IE_Download: * Open internet options /Tab General Temporary Internet files and clear files
+      * run notepad/mspaint or any other program and run File/Open and paste url
+        ("http://www.sheetmusicdirect.com/scorches/smd_h_0000000000215540.sco")
+      * Open internet options /Tab General Temporary Internet files again and click on show files
+      * sort file by size and now finally you should see smd_h_0000000000215540.sco
+
+  General:
+      * In >Windows< Explorer enter %temp% in the address bar and sort files for date of change
+      * Reload site(F5) with Scorch
+      * Refresh(F5) temp files window and Rename(F2) latest file to *.sco like sb9B87.tmp -> sb9B87.tmp.sco
+
+
+
+
+There's some limited support for MAC OS
+Get
+Install Scorch.pkg\Contents\Archive\Library\Internet Plug-Ins\Scorch.plugin\Contents\MacOS\Scorch
+copy it to a windows PC; apply the patch and copy it back.
+Well all DRM-string patch pattern match,
+so major limits like just view first page/play only first 30 notes/watermarks should be gone.
+But I've no mac to test if the patched file will run. (It may refuse to run because of checksum errors. )
+
+
+                                                                                    <cw2k@gmx.net>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Patches:
+
+#11 ShowALL::ViewAllPages (ViewAllPagesFromCdRom)
+    03 04 17 3E  -> 04 ?? ?? ??
+    Shows all pages in ViewMode
+
+
+#12 ShowALL::PrintModePrintPages
+    11 19 1E 0F  -> 12...
+
+#13 ShowALL::PrintModeDisplayPrintNumPages
+    1D 0C 1E 0F  -> 1E
+
+
+#21 PlayALL::PlayOptionType
+    18 14 12 3E -> 19
+
+
+#22 PrintAll::PrintingSecurityScript Don't ask for printing allowed
+    11 19 21 05 -> 11
+
+#23 PrintAll::LogPrintScript ; Don't report printing started
+    12 0B 26 03 -> 13
+
+#24 PrintAll::ViewModePrintPages(PrintModePrintPages already patched in 'ShowALL::')
+    1B 09 1C 07 -> 1C
+
+#25     PrintAll::AlwaysPrintMode ("view" -> "print")
+        view
+        00 76 69 65 77 00 -> 00 70 72 69 6E 74 00
+
+#26 PrintAll::AlwaysSibPrint
+    FF 50 14 48 74 10 48 74 04 6A 04
+    FF 50 14 EB 08
+
+
+
+#31 NoWatermark::ViewModeWatermark
+    19 06 02 1A
+#32 NoWatermark::ViewPagesWatermark
+    11 19 23 02
+
+#33 NoWatermark::PrintModeWatermark
+    16 11 1E 0F
+(#34 NoWatermark::PrintModeDisplayWatermark)
+ same as '#12 ShowALL::PrintModePrintPages'
+    11 19 1E 0F
+
+
+
+#41 AllowFilePrint1::"DOCUMENT IMAGING"
+    49 00 4D 00 41 00 47 00 49 00 4E 00 47 00 00 00
+
+#42 AllowFilePrint1::"FILE:"
+    46 00 49 00 4C 00 45 00 3A 00 00 00
+
+
+#43 AllowFilePrint2::"HTML"
+    48 00 54 00 4D 00 4C 00 00 00
+
+#44 AllowFilePrint2::"FINEPRINT"
+    46 00 49 00 4E 00 45 00 50 00 52 00 49 00 4E 00 54 00 00 00
+
+
+#45 AllowFilePrint3::"ACROBAT"
+    41 00 43 00 52 00 4F 00 42 00 41 00 54 00 00 00
+
+#46 AllowFilePrint3::"PDF"
+    50 00 44 00 46 00 00 00
+
+#47 AllowFilePrint3::"FPP3"
+    46 00 50 00 50 00 33 00 00 00
+
+#48 AllowFilePrint3::"XPS"
+    58 00 50 00 53 00 00 00
+
+
+    Save requirements
+        FileMode=00(Sib) and
+        Print&SaveFlag("GlobalSnap")=1
+
+        Needs Patches
+         IsScorch = 00 (=> always sib)
+
+
+
+#51 Save_Sib_File::AllowSave&Print("GlobalSnap"=1)
+    8A ?? E4 00 00 00 C3
+    B0 01 C3
+
+    <Print&Save>
+    8A81 E4000000 MOV     AL, [ECX+E4
+    C3            RETN
+
+#52 Save_IsSib::Don't Delete TmpFile And
+    Save_IsSib::GUI_EnableButton
+    8B ?? FF 50 14 84 C0 75 18
+    ?? ?? ?? ?? ?? 32 ?? ?? ??
+
+    8B06          MOV     EAX, [ESI]
+    FF50 14       CALL    [EAX+14]  ;IsSibFile
+    84C0          TEST    AL, AL
+    75 18         JNZ     SHORT Bad
+
+
+
+    XF_MidiExport
+        Required htmlParams:
+
+        scorch_show_xf = "1"    ;Else Button is not created
+        scorch_command = "2"    ;Hide/Enable Button
+
+        And:
+        <FileType is 00 - SCO File>
+
+#53 XF_MidiExport::NoHttpAskForPermission
+    ?? ?? ?? ?? ?? 20 00 74 52
+    EB 4A ?? ?? ?? ?? ?? ?? ??
+
+    1002BC5B <XF_Proc>
+    56            PUSH    ESI                              ;  XF4_NoAllowRequest
+    8BF1          MOV     ESI, ECX
+    837E 20 00    CMP     [DWORD ESI+20], 0
+    74 52         JE      SHORT <Quit>
+    patch to jmp <XF_Start>
+    Requires 'PrintingSecurityScript' to be ""
+
+#54 XF_MidiExport::HtmlParams__SCORCH_SHOW_XF=1
+    6A 0B ?? ?? FF ?? 38 0F B6 C0
+    ?? ?? ?? ?? ?? ?? ?? B0 01 90
+    6A 0B         PUSH    0B
+    8BCE          MOV     ECX, ESI
+    FF50 38       CALL    [EAX+38]
+    0FB6C0        MOVZX   EAX, AL                          ;  XF1_ alway 'scorch_show_xf=1'
+
+
+#55 XF_MidiExport::AlwaysPrintMode
+    58 48 48 F7 D8 1B C0 40 C3
+    ?? ?? ?? ?? ?? 33 ?? ?? ??
+    8B01            MOV     EAX, [ECX]
+    FF50 58         CALL    [EAX+58]
+    48              DEC     EAX
+    48              DEC     EAX
+    F7D8            NEG     EAX
+    1BC0            SBB     EAX, EAX
+    40              INC     EAX
+    C3              RETN
+
+
+#61 Sib::EnableSubstitute_Instr
+    FF 50 14 C6 45 FB 01 84 C0 75 03
+
+
+    FF50 14         CALL    [EAX+14]                         ;  isSco enableSubst
+    C645 FB 01      MOV     [BYTE EBP-5], 1
+    84C0            TEST    AL, AL
+    75 03           JNZ     SHORT 0295EB22                   ;  CORE_REQ_SubstForSib's
+
+
+#71 PopupMenu::Enable all
+    8B 44 24 04 8A 44 08 17 C2 04 00
+    ?? ?? ?? ?? B0 01 90 90 ?? ?? ??
+
+    8B4424 04     MOV     EAX, [ESP+4]
+    8A4408 17     MOV     AL, [EAX+ECX+17]                 ;  Con_AllMenu enable
+    C2 0400       RETN    4
+
+
+
+Notes:
+
+    1. Call
+    "DOCUMENTS\*.PDF"
+    with
+    "DOCUMENT IMAGING"
+    "FILE:"
+
+    2. Call
+    Compares "ADOBE PDF CONVERTER"
+    with
+    "HTML"
+    "FINEPRINT"
+
+
+    3. Call
+    Compares "DOCUMENTS\*.PDF" and "ADOBE PDF CONVERTER"
+    with
+    ACROBAT
+    PDF
+    FPP3
+    XPS
+
+
+
+    NPSibelius.dll.rdata somewhere after "LSFFingering (string = "
+
+    EnableSubstituteInstruments
+
+
+
+
+Example DRM-Data attached to *.sco
+
+0x5B <DRM-Data Size> as BigEndian-DWORD
+{
+    XiewAllPages "False"
+    XlayOptionType "3"
+    EnableTranspose "True"
+    EnableSubstituteInstruments "True"
+    Instruments
+    {
+         "Flute"
+         "Clarinet in B~b"
+         "Clarinet in A"
+         "Oboe"
+         "Bassoon"
+         "Trumpet in B~b"
+         "Trombone"
+         "Horn in F"
+         "Tuba"
+         "Alto Saxophone"
+         "Tenor Saxophone"
+         "Baritone Saxophone"
+         "Violin"
+         "Viola"
+         "Violoncello"
+         "Contrabass"
+         "Voice"
+         "Guitar"
+    }
+    ViewModeNotifyScoreChanged "True"
+    PrintModeNotifyScoreChanged "True"
+    ViewModePrintPages "1"
+    PrintModePrintPages "-1"
+    VendorId "elegant"
+    VendorSecret "chaos"
+    PrintingSecuritySecret "captainbob"
+    PrintingSecurityScript "http://www.sheetmusicdirect.com/Authorisation.aspx"
+    LogPrintScript "http://www.sheetmusicdirect.com/PrintedOK.aspx"
+    ViewFirstNPages "1"
+    PlayFrom "1"
+    PlayDuration "30"
+    ViewModeWatermark "For Promotion Only"
+    ScoreChangedScript "http://www.sheetmusicdirect.com/ScoreChanged.aspx"
+}
+
+Some Defaultvalues for the encrypted DRM-Values:
+
+1008AF34   COND: StrKey = 0673755C "PrintingSecuritySecret"
+
+1008AF4D   COND: Key = 06667C8C "ViewAllPagesFromCdRom" DefValue = 00
+1008AF4D   COND: Key = 0488F18C "ViewAllPages" DefValue = 01
+                                    "ViewFirstNPages" DefValue = 00
+
+                                    "PrintModeDisplayPrintNumPages" DefValue ="PrintModePrintPages"
+
+
+1008AF4D   COND: Key = 063BADC4 "EnableTranspose"
+1008AF5E   COND: DefValue = 01
+
+1008AF4D   COND: Key = 05E1AF0C "EnableSubstituteInstruments"
+1008AF5E   COND: DefValue = 00
+
+
+10037223   COND: EncValue = 0619A398 "PlayOptionType"
+
+1008AF4D   COND: Key = 048B5E7C "PlayAllFromCdRom"
+1008AF5A   COND: DefValue = 00
+
+
+
+
+10037223   COND: EncValue = 0619A398 "PlayOptionType"
+
+
+
+1008AF34   COND: StrKey = 068397F4 "ScoreChangedScript"
+
+1008AF34   COND: StrKey = 0676BC6C "PrintingSecurityScript"
+
+1008AF34   COND: StrKey = 063BE404 "LogPrintScript"
+
+1008AF34   COND: StrKey = 063BE404 "LogPrintScript"
+
+
+
+  Enc_Off = 10370BD4
+  Enc_Data = 3E170403
+  EncValue = 09ED9660 "ViewAllPagesFromCdRom"
+  DefValue = 00
+
+  if (HMTLCommand("scorch_command") >= "print" )
+     Enc_Off = 10370E78
+     Enc_Data = 0F1E1911
+     EncValue = 0A389F20 "PrintModePrintPages"
+     CurValue = FFFFFFFF
+     Def = FFFFFFFF
+
+     Enc_Off = 10371118
+     Enc_Data = 0F1E0C1D
+     EncValue = 06474A78 "PrintModeDisplayPrintNumPages"
+     Def = FFFFFFFF
+
+  else
+
+     Enc_Off = 10370BB8
+     Enc_Data = 3E170403
+     EncValue = 0AAD3ED8 "ViewAllPages"
+     CurValue = 00
+     DefValue = 01
+
+     Enc_Off = 10370BF8
+     Enc_Data = 3209100B
+     EncValue = 0AAD3EB8 "ViewFirstNPages"
+     CurValue = 00000001
+     Def = 00000000
+
+
+
+  Enc_Off = 10370C88
+  Enc_Data = 171F0810
+  EncValue = 09DF5AD0 "EnableTranspose"
+  CurValue = 00
+  DefValue = 01
+
+  Enc_Off = 10370CA4
+  Enc_Data = 372F091B
+  EncValue = 045EF3F8 "EnableSubstituteInstruments"
+  CurValue = 00
+  DefValue = 00
+
+  Enc_Off = 10370C30
+  Enc_Data = 3E121418
+  EncValue = 09DF7170 "PlayOptionType"
+  CurValue = 00000003
+  Def = 00000000
+
+  Enc_Off = 10370C14
+  Enc_Data = 0B2C100B
+  EncValue = 09DF7010 "PlayAllFromCdRom"
+  DefValue = 00
+
+  Enc_Off = 10370C30
+  Enc_Data = 3E121418
+  EncValue = 09DF7170 "PlayOptionType"
+  CurValue = 00000003
+  Def = 00000000
+
+  Enc_Off = 10370C4C
+  Enc_Data = 01370F1F
+  EncValue = 0A57A048 "PlayFrom"
+  CurValue = 00000001
+  Def = 00000000
+
+  Enc_Off = 10370C6C
+  Enc_Data = 1F0E1116
+  EncValue = 09DF7010 "PlayDuration"
+  CurValue = 00000000
+  Def = 00000000
+
+  Enc_Off = 10370D9C
+  Enc_Data = 3F180403
+  EncValue = 0A38F588 "ScoreChangedScript"
+  Str = 0A672474 "http://www.sheetmusicdirect.com/ScoreChanged.aspx"
+  Def_Str = 10328FD0 ""
+
+  Enc_Off = 10370CD4
+  Enc_Data = 05211911
+  EncValue = 0A38F308 "PrintingSecurityScript"
+  Str = 09EB77EC "http://www.sheetmusicdirect.com/Authorisation.aspx"
+  Def_Str = 10328FD0 ""
+
+  Enc_Off = 10370D48
+  Enc_Data = 03260B12
+  EncValue = 09DF89F0 "LogPrintScript"
+  Str = 0A6723F4 "http://www.sheetmusicdirect.com/PrintedOK.aspx"
+  Def_Str = 10328FD0 ""
+
+  Enc_Off = 10370D48
+  Enc_Data = 03260B12
+  EncValue = 09DF5890 "LogPrintScript"
+  Str = 0A6723F4 "http://www.sheetmusicdirect.com/PrintedOK.aspx"
+  Def_Str = 10328FD0 ""
+
+
+Print
+
+Enc_Off = 10370E9C
+Enc_Data = 0F1E1116
+EncValue = 060DCCA8 "PrintModeWatermark"
+Def_Str = 10328FD0 ""
+
+Enc_Off = 10371148
+Enc_Data = 0F1E1911
+EncValue = 0618DDF8 "PrintModeDisplayWatermark"
+Def_Str = 10328FD0 "" [PrintModeWatermark]
+
+
+Enc_Off = 10370E5C
+Enc_Data = 1A020619
+EncValue = 09E66358 "ViewModeWatermark"
+Str = 0A6E1C84 "For Promotion Only"
+Def_Str = 10328FD0 ""
+
+Enc_Off = 10370FF4
+Enc_Data = 02231911
+EncValue = 060DB1C8 "ViewPagesWatermark"
+Def_Str = 10328FD0 ""
+Enc_Off = 10370E9C
+
+
+if
+    Enc_Off = 10370E38
+    Enc_Data = 071C091B
+    EncValue = 0A8A99E0 "ViewModePrintPages"
+    CurValue = 00000001
+    Def = 00000001
+else
+    Enc_Off = 10370E78
+    Enc_Data = 0F1E1911
+    EncValue = 0A8A99E0 "PrintModePrintPages"
+    CurValue = FFFFFFFF
+    Def = FFFFFFFF
+
+
+
+
+
+http://www.sibelius.com/Scorchlog/cgi-bin/vendorverify.pl?ChallengePhrase=OdIE9ze3je8XrfFk2xKDvr
+numCopies=1
+randomNumber=287755440
+scorchVersion=6%2c2%2c0%2c88
+scoreURL=file%3a%2f%2f%2fE%3a%2fCrack%2fSibelius%2fSibelius%2520Scorch%2520File%2520converter%2fSCORA%2fa%2esco
+security=challengeResponse
+vendorArg1=
+vendorArg10=
+vendorArg11=
+vendorArg12=
+vendorArg13=
+vendorArg14=
+vendorArg15=
+vendorArg16=
+vendorArg17=
+vendorArg18=
+vendorArg19=
+vendorArg2=
+vendorArg20=
+vendorArg3=
+vendorArg4=
+vendorArg5=
+vendorArg6=
+vendorArg7=
+vendorArg8=
+vendorArg9=
+VendorID=elegant
+
+
+http://www.sibelius.com/Scorchlog/cgi-bin/vendorverify.pl?ChallengePhrase=OdIE9ze3je8XrfFk2xKDvr&numCopies=1&randomNumber=287755440&scorchVersion=6%2c2%2c0%2c88&scoreURL=file%3a%2f%2f%2fE%3a%2fCrack%2fSibelius%2fSibelius%2520Scorch%2520File%2520converter%2fSCORA%2fa%2esco&security=challengeResponse&vendorArg1=&vendorArg10=&vendorArg11=&vendorArg12=&vendorArg13=&vendorArg14=&vendorArg15=&vendorArg16=&vendorArg17=&vendorArg18=&vendorArg19=&vendorArg2=&vendorArg20=&vendorArg3=&vendorArg4=&vendorArg5=&vendorArg6=&vendorArg7=&vendorArg8=&vendorArg9=&VendorID=elegant
+OK: 5491af24b38964e36df9e2ed11307e7b
+
+
+http://www.sheetmusicdirect.com/Authorisation.aspx?CartID=
+ChallengePhrase=zRaj2iXaj5tu%40IGn0%407uaH
+Instrument=
+numCopies=1
+randomNumber=288878772
+scorchVersion=6%2c2%2c0%2c88
+scoreURL=file%3a%2f%2f%2fE%3a%2fCrack%2fSibelius%2fSibelius%2520Scorch%2520File%2520converter%2fSCORA%2fa%2esco
+security=challengeResponse
+Transposition=
+vendorArg1=
+vendorArg10=
+vendorArg11=
+vendorArg12=
+vendorArg13=
+vendorArg14=
+vendorArg15=
+vendorArg16=
+vendorArg17=
+vendorArg18=
+vendorArg19=
+vendorArg2=
+vendorArg20=
+vendorArg3=
+vendorArg4=
+vendorArg5=
+vendorArg6=
+vendorArg7=
+vendorArg8=
+vendorArg9=
+XFRequest=True
+
+
+http://www.sheetmusicdirect.com/Authorisation.aspx?CartID=&ChallengePhrase=zRaj2iXaj5tu%40IGn0%407uaH&Instrument=&numCopies=1&randomNumber=288878772&scorchVersion=6%2c2%2c0%2c88&scoreURL=file%3a%2f%2f%2fE%3a%2fCrack%2fSibelius%2fSibelius%2520Scorch%2520File%2520converter%2fSCORA%2fa%2esco&security=challengeResponse&Transposition=&vendorArg1=&vendorArg10=&vendorArg11=&vendorArg12=&vendorArg13=&vendorArg14=&vendorArg15=&vendorArg16=&vendorArg17=&vendorArg18=&vendorArg19=&vendorArg2=&vendorArg20=&vendorArg3=&vendorArg4=&vendorArg5=&vendorArg6=&vendorArg7=&vendorArg8=&vendorArg9=&XFRequest=True
+
+
+
+
+Extracting Images from uncompressed *.sib
+00026010   5C 0006E874  00FFFFFF 00FFFFFF   \  èt ÿÿÿ ÿÿ
+              0006E874 * 4Channels = 001BA1D0
+
+001BA1C4   FF FF FF 00  FF FF FF 00  FF FF FF     ÿÿÿ ÿÿÿ ÿÿÿ
+001BA1D0   000004C1 06944DA3574A63DC21     Á ”M£WJcÜ!
+                    0x18
+001BA1E8   F9 BC 40 00  5C 00 1D A6  2E 00 FF FF   ù¼@ \  ¦. ÿÿ
+
+
+
+
+
+
+
+
+
+All commands
+Dumped with Ollydbg
+01 "scorch_command"
+                    01  "view"
+                    02  "print"
+                    03  "autoprint"
+
+1002455A   COND: Html_Name = 02711884 "scorch_first_page_footer"
+1002455A   COND: Html_Name = 027177EC "scorch_second_page_footer"
+1002455A   COND: Html_Name = 02711854 "scorch_num_copies"
+1002455A   COND: Html_Name = 02717CFC "jasracrule"
+
+
+
+    0F  "hidetoolbar"
+    1C  "shrinkwindow"
+
+    10  "contextpaging"           MENUITEM "&Next page", 103
+                                  MENUITEM "&Previous page", 104
+    11  "contextinstrument"       MENUITEM "&Lead instrument...", 105
+    12  "contexttranspose"        MENUITEM "&Transpose...", 106
+    13  "contextprint"            MENUITEM "&Print...", 107
+    14  "contextxf"               MENUITEM "&XF export...", 108
+                                  MENUITEM "&About Scorch...", 101
+    0B  "scorch_show_xf"
+
+    3F  "jasracrule"    show "For Promotion only"
+
+
+
+
+
+
+    src                             SomeFileName
+    scorch_command                  1 "view"            2 "print"   3 "autoprint"
+                                    ViewPagesWatermark  PrintModeWatermark "Blah"
+                                                        PrintModeDisplayWatermark "Blah"
+                                                        UseBlackTextForViewModeDisplayWatermark 0
+                                    UseBlackTextForPrintModeDisplayWatermark
+
+    Log data, item 4
+ Address=10037223
+ Message=COND: EncValue = 027BB938 ""
+
+    scorch_num_copies
+    scorch_first_page_footer        "Demo Printout"
+    scorch_second_page_footer       "Demo Printout Next"
+    scorch_base_url
+    scorch_cart_id
+    scorch_transposition
+    scorch_instrument
+    scorch_minimum_version  6150
+    -1
+    scorch_preferred_version
+    scorch_show_xf
+    scorch_referrer
+    scorch_shrink_limit
+    70
+    scorch_nohtml
+    hidetoolbar                 "1"
+
+    contextpaging               "1"
+    contextinstrument           "1"
+    contexttranspose            "1"
+    contextprint                "1"
+    contextxf                   "1"
+    autozoom
+    hideborder
+    dmbmode
+    splitplayback
+    autozoompercent
+    100
+    splitview
+    splitnumsystems
+    shrinkwindow
+    splitminaspectratio
+    scorch_arg_1
+    scorch_arg_2
+    scorch_arg_3
+    scorch_arg_4
+    scorch_arg_5
+    scorch_arg_6
+    scorch_arg_7
+    scorch_arg_8
+    scorch_arg_9
+    scorch_arg_10
+    scorch_arg_11
+    scorch_arg_12
+    scorch_arg_13
+    scorch_arg_14
+    scorch_arg_15
+    scorch_arg_16
+    scorch_arg_17
+    scorch_arg_18
+    scorch_arg_19
+    scorch_arg_20
+    title
+    composer
+    arranger
+    lyricist
+    more_info
+    artist
+    copyright
+    publisher
+    scorch_extra_00
+    scorch_extra_01
+    scorch_extra_02
+    scorch_extra_03
+    scorch_extra_04
+    jasracrule
+    dummy_SUPPORTED_PROPERTY_COUNT
+
+
+Unlock
+
+ViewAllPages    -> XiewAllPages
+PlayOptionType  -> XlayOptionType
+    PlayFrom    -> XlayFrom
+    PlayDuration    -> XlaPDuration
+
+
+
+Type_0x00
+("MajorVersion" )
+    Type_0x40 "ScoreOptions"
+
+    "OriginalProgramVersion" Dword
+    "JustifyTracking" DwordFloat
+    "MinHeightToJustify"
+        "__PartMapDefault" Float
+        "PartMapOverrides"
+    "StaveJustifyRatio" Float 0.25
+0x18    "DefaultStaveGap" 0x0000 0130
+    "DefaultSystemGap"
+
+    "NameAtStart"
+0x2E    "NameSubsequently"
+0x36    "NameAtNewSection"
+    "GlobalSnap"

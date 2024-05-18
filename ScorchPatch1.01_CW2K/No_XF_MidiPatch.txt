@@ -1,0 +1,12 @@
+Hello I am a marker file for Scorch Patch_CW2K.exe .
+
+If I'm in the same dir as the patcher, the patcher will also do the XF_MidiExport::HtmlParams__SCORCH_SHOW_XF=1 patch.
+^-Well that patch REPLACES the "Print"-button  with the "XF"-button to export the file to *.mid.
+
+Printing is now only available via the right click popup context menu 'Print'.
+(Sorry for that inconvenience, that's however some design bug/intent due to
+object orientated
+class
+'cw2k' don't know how to overcome by patching)
+Suggestion: to 'disable' me you maybe rename me to 
+"Do_XF_MidiPatch.txt" ->  "No_XF_MidiPatch.txt"
