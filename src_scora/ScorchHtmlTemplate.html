@@ -1,0 +1,29 @@
+﻿<html>
+<head>
+<title>$TITLE$ von $COMPOSER$</title>
+
+<body>
+	<object id="ScorchPlugin"
+			classid="clsid:A8F2B9BD-A6A0-486A-9744-18920D898429"
+			width="$WIDTH$"
+			height="$HEIGHT$"
+			codebase="http://www.sibelius.com/download/software/win/ActiveXPlugin.cab#6,1,5,0">
+	<param name="src" value="$FILENAME$">
+	<param name="type" value="application/x-sibelius-score">
+	<param name="scorch_minimum_version" value="6150">
+	<param name="scorch_preferred_version" value="6150">
+	<param name="scorch_shrink_limit" value="90">
+
+	<embed src="$FILENAME$"
+			 scorch_minimum_version="6150"
+			 scorch_preferred_version="6150"
+			 scorch_shrink_limit="90"
+			 width="$WIDTH$"
+			 height="$HEIGHT$"
+			 type="application/x-sibelius-score"
+			 pluginspage="http://www.sibelius.com/cgi/plugin.pl">
+	</embed>
+	</object>
+</body>
+</html>
+
