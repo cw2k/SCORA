@@ -72,6 +72,94 @@ Wow cool they still (@2024) have the old scorch on their website:
 	...
 
 
+### Grabbing *.sco Scorch files from a site.
+
+The easiest way is to use these SCORA [bookmarklets](http://wikipedia.org/wiki/Bookmarklet)
+
+To Install a bookmarklet apply the following steps:
+
+1. Copy the code in the selected code snippet.
+2. Create a new bookmark / favourite in your browser. Name it like the name text above the code. For the URL part paste(ctrl + v) the code you copied in step 1. 
+3. Click "Done"
+
+Get SCO now
+```javascript
+javascript:window.location=document.body.textContent.match(/[^"'>\s]+\.(sco)/gmi)[0]
+```
+that is the Instant download version 
+
+Make SCO link
+```javascript
+javascript:var d=document.body;var f=(d.textContent.match(/[^"'>\s]+\.(sco)/gmi)||alert("No SCO found!"))[0];var e = document.createElement('a');e.text='Download *.sco file';e.href=f;d.prepend(e);
+```
+that version creates a download on the top of the page you can click on.
+
+To Use:
+1. Open a website that has a *.sco on it. (Uses the Scorch player)
+2. Click the Bookmark you created before.
+
+Alternative workaround is to view the html-pages source (Hotkey is mostly Ctrl+U) and search for ".sco" there.
+
+#### Bookmarklet source code
+__Make SCO link__
+```javascript
+// Unfortunately DOM does not parse the script tag.
+// So that is how far you'll get via selectors: 
+// document.querySelector("script[id*='scorchObjectTemplate']")
+//
+// So the workaround is a plain Full text grep on the site
+var d = document.body;
+var f = (d.textContent.match(/[^"'>\s]+\.(sco)/gmi)  || alert("No SCO found!") )[0]; 
+
+var e = document.createElement('a');
+e.text  = 'Download *.sco file';
+e.href  = f;
+
+d.prepend(e);
+```
+__Get SCO now__
+```javascript
+	window.location = 
+		document.body.textContent.match(/[^"'>\s]+\.(sco)/gmi)[0])
+	    .src;
+```
+
+### Browser with NSAPI support to use Scorch player on the sites.
+
+ Mozilla has dropped the support of NPAPI plugins from Mozilla Firefox version 52.
+"[Pale Moon](https://www.palemoon.org/download.shtml) supports NPAPI plug-ins. Unlike Firefox, we will not be deprecating or removing support for these kinds of plug-ins."
+from [askubuntu.com](https://askubuntu.com/questions/905910/is-there-any-web-browser-with-npapi-plugins-support)
+
+
+So install palemoon 32-Bit Version.
+[Scorch620NSPluginInstaller](http://hub.sibelius.com/download/software/win/Scorch620NSPluginInstaller.exe)
+If installation hangs on VCredist kill installer.exe in Taskmanager.
+If installation succeed it there should be the file
+"c:\Program Files (x86)\Sibelius Software\Scorch\ScorchAxPlugin.dll"
+Incase you somehow manually extract the files from the installer.
+run regsvr32.exe ScorchAxPlugin.dll it'll invoke COM-Registation ( call API-export DllRegisterServer)
+... and save it's GUID and the path to the Registry.
+palemoon and others will then find it by its GUID.
+
+
+okay now you can test it via
+`java -jar SCORA.jar -verbose -HTML example\smd_137443.sco`
+
+load the created smd_137443.sco.html in palemoon Browser.
+Pay attention that you installed the 32-Bit Version of palemoon Browser ! ).
+
+
+Okay on https://www.sheetmusicdirect.com/de-DE/se/ID_No/114818/Product.aspx it still seems to not work.
+Well if scorch object is inside a script tag, it can't run.
+This Bookmarklet will remove that script tag
+
+__Reactivate SCO__
+```javascript
+javascript:var o=document.querySelector("script[id*='scorchObjectTemplate']")||alert("No SCO found!");o.outerHTML=o.innerHTML;undefined
+```
+
+
+
 Scorch-Away Version 1.2c - Readme
 ================================
 
@@ -148,106 +236,19 @@ History
 http://deioncube.in/files/?dir=cw2k/Sibelius Patch & Scorch File converter
 
 
-### Grabbing *.sco Scorch files from a site.
-
-The easiest way is to use these SCORA [bookmarklets](http://wikipedia.org/wiki/Bookmarklet)
-
-To Install a bookmarklet apply the following steps:
-
-1. Copy the code in the selected code snippet.
-2. Create a new bookmark / favourite in your browser. Name it like the name text above the code. For the URL part paste(ctrl + v) the code you copied in step 1. 
-3. Click "Done"
-
-Get SCO now
-```javascript
-javascript:window.location=document.body.textContent.match(/[^"'>\s]+\.(sco)/gmi)[0]
-```
-that is the Instant download version 
-
-Make SCO link
-```javascript
-javascript:var d=document.body;var f=(d.textContent.match(/[^"'>\s]+\.(sco)/gmi)||alert("No SCO found!"))[0];var e = document.createElement('a');e.text='Download *.sco file';e.href=f;d.prepend(e);
-```
-that version creates a download on the top of the page you can click on.
-
-To Use:
-1. Open a website that has a *.sco on it. (Uses the Scorch player)
-2. Click the Bookmark you created before.
-
-Alternative workaround is to view the html-pages source (Hotkey is mostly Ctrl+U) and search for ".sco" there.
-
-#### Bookmarklet source code
-Make SCO link
-```javascript
-// Unfortunately DOM does not parse the script tag.
-// So that is how far you'll get via selectors: 
-// document.querySelector("script[id*='scorchObjectTemplate']")
-//
-// So the workaround is a plain Full text grep on the site
-var d = document.body;
-var f = (d.textContent.match(/[^"'>\s]+\.(sco)/gmi)  || alert("No SCO found!") )[0]; 
-
-var e = document.createElement('a');
-e.text  = 'Download *.sco file';
-e.href  = f;
-
-d.prepend(e);
-```
-Get SCO now
-```javascript
-	window.location = 
-		document.body.textContent.match(/[^"'>\s]+\.(sco)/gmi)[0])
-	    .src;
-```
-
-### Browser with NSAPI support to use Scorch player on the sites.
-
- Mozilla has dropped the support of NPAPI plugins from Mozilla Firefox version 52.
-"[Pale Moon](https://www.palemoon.org/download.shtml) supports NPAPI plug-ins. Unlike Firefox, we will not be deprecating or removing support for these kinds of plug-ins."
-from [askubuntu.com](https://askubuntu.com/questions/905910/is-there-any-web-browser-with-npapi-plugins-support)
-
-
-So install palemoon 32-Bit Version.
-[Scorch620NSPluginInstaller](http://hub.sibelius.com/download/software/win/Scorch620NSPluginInstaller.exe)
-If installation hangs on VCredist kill installer.exe in Taskmanager.
-If installation succeed it there should be the file
-"c:\Program Files (x86)\Sibelius Software\Scorch\ScorchAxPlugin.dll"
-Incase you somehow manually extract the files from the installer.
-run regsvr32.exe ScorchAxPlugin.dll it'll invoke COM-Registation ( call API-export DllRegisterServer)
-... and save it's GUID and the path to the Registry.
-palemoon and others will then find it by its GUID.
-
-
-okay now you can test it via
-`java -jar SCORA.jar -verbose -HTML example\smd_137443.sco`
-
-load the created smd_137443.sco.html in palemoon Browser.
-Pay attention that you installed the 32-Bit Version of palemoon Browser ! ).
-
-
-Okay on https://www.sheetmusicdirect.com/de-DE/se/ID_No/114818/Product.aspx it still seems to not work.
-Well if scorch object is inside a script tag, it can't run.
-This Bookmarklet will remove that script tag
-
-Reactivate SCO
-```javascript
-javascript:var o=document.querySelector("script[id*='scorchObjectTemplate']")||alert("No SCO found!");o.outerHTML=o.innerHTML;
-```
-
 ___________________
 
-##From sibelius.com helpcenter
+### From sibelius.com helpcenter
 
-[SOLVED] Converting *.sco -> *.sib
+__[SOLVED] Converting *.sco -> *.sib__
 **open free .sco files in sibelius
 **is there a possibility to open free .sco (scorch files) in sibelius to edit it? i want to modify some arrangement i found on sibeliusmusic.com for my musicclass ensembles. now i have to print out the sheets and scan with photoscore to have the possibility of editing in sibelius. it is not comfortable. 
 
 Of course you can open .sco again in Sibelius.
 But it requires some 'magic' to undo da bad stuff and unwrap the 'CCSCORCH'-Layer. :rolleyes:
-In early days I patches sibelius.exe(*## Sibelius710b54_CW2K_Edition.7z*) to also open *.sco files. However to cover the cases were there is an pdf wrapped into a *.sco and just for fun I made a special program call 'SCORA':
-**bit.do/SCORA**
-## files.planet-dl.org/Cw2k/Sibelius%20Patch%20&%20Scorch%20File%20converter/GUI/
-^-that's a text link !!! (* ## scroll to end for more)
+In early days I patches sibelius.exe(*## Sibelius710b54_CW2K_Edition.7z*) to also open *.sco files.
+However to cover the cases were there is an pdf wrapped into a *.sco and just for fun I made a special program call 'SCORA':
+
 GUI is windows(VB6) but the main part(SCORA.jar) of the converter is in java so it could be run on both PC and MAC.
 **SCORA **is short for **Scorch away** and will completely unwrap *.sco files. 
 
