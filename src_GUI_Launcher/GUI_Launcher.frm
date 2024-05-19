@@ -315,7 +315,7 @@ Private Sub chk_opt_Init()
 End Sub
 
 Private Sub mi_CheckForUpdate_Click()
-   openURL ("http://deioncube.in/files/cw2k/Sibelius%20Patch%20&%20Scorch%20File%20converter/GUI")
+   openURL ("https://github.com/cw2k/SCORA")
 End Sub
 
 Private Sub mi_mi_Forum_Click()
