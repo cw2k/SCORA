@@ -93,7 +93,7 @@ Public Event OnInit(ProgramName$)
 Public Event OnOutput(TextLine$, ProgramName$)
 Public Event OnDone(ExitCode&)
 
-Public Function ShellExConsole(FileName$, Params$, Optional ByRef ExitCode&, Optional WinStyle As VbAppWinStyle = vbHide) As String
+Public Function ShellExConsole(FileName$, Params$, Optional ByRef ExitCode&, Optional WinStyle As VbAppWinStyle = vbHide) As Boolean
 On Error GoTo ShellExConsole_err
   
    
@@ -127,7 +127,7 @@ On Error GoTo ShellExConsole_err
     Dim hReadPipe As Long, hWritePipe As Long
     Retval = CreatePipe(hReadPipe, hWritePipe, sa, 0)
     If Retval = 0 Then
-        err.Raise 5, , "CreatePipe failed! RetVal: 0x" & H32(Retval)
+        err.Raise 5, , "CreatePipe failed! LastError: 0x" & H32(err.LastDllError)
     End If
    
   ' Prepare STARTUPINFO for CreateProcess
@@ -153,6 +153,11 @@ On Error GoTo ShellExConsole_err
     If Retval <> 0 Then
         
         Do
+            Retval = GetExitCodeProcess(proc.hProcess, ExitCode)
+            If Retval = 0 Then
+                err.Raise 5, , "GetExitCodeProcess failed! LastError: 0x" & H32(err.LastDllError)
+            End If
+            
             Dim lPeekData As Long
             PeekNamedPipe hReadPipe, ByVal 0&, 0&, ByVal 0&, _
                 lPeekData, ByVal 0&
@@ -164,31 +169,28 @@ On Error GoTo ShellExConsole_err
                 Dim Buffer As String
                 Buffer = Space$(lPeekData)
                 Retval = ReadFile(hReadPipe, Buffer, Len(Buffer), L, 0&)
-                If Retval = 1 Then
-                    
-                    Buffer = Left(Buffer, L)
-                    
-                  ' Send line / raise OnOutputLine Event
-                    RaiseEvent OnOutput(Buffer, ProgramName)
-                    
-                    
-                    Dim retText As String
-                    retText = retText & Buffer
-                    
-                    
-                Else
+                If Retval = 0 Then
                     err.Raise 5, , "ReadFile failed! RetVal: 0x" & H32(Retval)
                 End If
-                
-            Else
-              ' Wait until procress finishes and get its ExitCode
-                Dim GetExitCode_RetVal&
-                GetExitCode_RetVal = GetExitCodeProcess(proc.hProcess, ExitCode)
+                    
+                Buffer = Left(Buffer, L)
+                  
+              ' Send line / raise OnOutputLine Event
+                RaiseEvent OnOutput(Buffer, ProgramName)
+                  
+                  
+                 'Dim retText As String
+                 'retText = retText & Buffer
              
             End If
             
+            
             myDoEvents
-        Loop While GetExitCode_RetVal And (ExitCode = STILL_ACTIVE)
+        Loop While ExitCode = STILL_ACTIVE
+        
+        'ShellEx is sucessful when ExitCode is 0
+        If ExitCode = 0 Then ShellExConsole = True
+
     
     Else
         err.Raise 5, , "CreateProcessA failed! RetVal: 0x" & H32(Retval)
@@ -197,8 +199,6 @@ On Error GoTo ShellExConsole_err
     CloseHandle hReadPipe
     CloseHandle hWritePipe
     
-    ShellExConsole = retText
-
 err.Clear
 ShellExConsole_err:
 
@@ -229,7 +229,7 @@ Select Case err
 End Select
 
 
-RaiseEvent OnDone(GetExitCode_RetVal)
+RaiseEvent OnDone(ExitCode)
 'GUI_SkipDisable
 
 

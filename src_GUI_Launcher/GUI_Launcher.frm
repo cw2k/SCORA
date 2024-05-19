@@ -452,6 +452,7 @@ On Error GoTo err
 
       LogVerbose "FileName: " & FileName
       LogTxt "CommandToExec: " & CommandToExec
+      LogTxt " "
 
       
       
@@ -496,7 +497,7 @@ End Sub
 '//
 
 Private Sub Console_OnDone(ExitCode As Long)
-   LogVerbose "ExitCode:" & ExitCode
+   LogTxt "ExitCode:" & ExitCode
    LogLine
 End Sub
 
