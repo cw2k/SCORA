@@ -3,7 +3,7 @@ SCORch Away is a Converter to turn Scorch viewer files (*.sco) back into AVID-Si
 A SIB file is a musical score created by Avid Sibelius, a popular music notation program.
 
 ## Requirements 
-JRE must be installed. [Java Runtime Envirmoment](https://java.com/de/download/manual.jsp). 
+JRE must be installed. [Java Runtime Envirmoment](https://java.com/download/manual.jsp). 
 **Tested with JRE 8 411**
 
 ## How To use
